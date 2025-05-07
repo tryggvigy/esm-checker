@@ -1,0 +1,10 @@
+[workspace]
+resolver = "2"
+
+members = [
+    "crates/walk_imports",
+    "crates/is_esm_ready_yet",
+    "crates/es_resolver",
+    "crates/web_server",
+    "crates/fetch_and_report",
+]

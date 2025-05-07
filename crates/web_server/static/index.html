@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESM Ready Checker</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        input {
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 300px;
+        }
+        button {
+            padding: 8px 16px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        .result-container {
+            margin-top: 20px;
+        }
+        .error {
+            color: #dc3545;
+            margin-top: 5px;
+        }
+        .loading {
+            color: #6c757d;
+            font-style: italic;
+        }
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        .explanation {
+            margin: 20px 0 32px 0;
+            padding: 18px 22px 18px 48px;
+            background: linear-gradient(90deg, #e3f0ff 0 8px, #f0f7ff 8px 100%);
+            border-left: 6px solid #339af0;
+            border-radius: 6px;
+            position: relative;
+            font-size: 1.05em;
+            box-shadow: 0 2px 8px rgba(51,154,240,0.06);
+        }
+        .explanation h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 1.25em;
+            color: #1864ab;
+            display: flex;
+            align-items: center;
+        }
+        .explanation .info-icon {
+            display: inline-block;
+            width: 1.3em;
+            height: 1.3em;
+            margin-right: 0.5em;
+            vertical-align: middle;
+        }
+        .explanation ul {
+            margin-top: 8px;
+            margin-bottom: 0;
+        }
+        .explanation li {
+            margin-bottom: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Is ESM Ready Yet?</h1>
+        <div class="input-group">
+            <input
+                type="text"
+                id="packageInput"
+                placeholder="Enter package names (comma-separated)"
+            />
+            <button id="checkButton">Check Packages</button>
+        </div>
+        <div id="error" class="error" style="display: none;"></div>
+
+        <div class="explanation">
+            <h3><span class="info-icon" aria-hidden="true">&#8505;&#65039;</span>Understanding the Results</h3>
+            <p>The output shows how the package handles ESM (ECMAScript Modules) and CommonJS:</p>
+            <ul>
+                <li><strong>cjs</strong>: Package only support CommonJS</li>
+                <li><strong>esm</strong>: Package properly supports ESM</li>
+                <li><strong>fauxEsm</strong>: Package claims to be ESM but has issues:
+                    <ul>
+                        <li><strong>withCommonjsDependencies</strong>: Package uses ESM but depends on CommonJS packages, which can cause issues in ESM environments</li>
+                        <li><strong>withMissingJsFileExtensions</strong>: Package uses ESM but doesn't properly specify file extensions in their imports, or has transitive dependencies which don't. This can cause problems in some environments</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div id="result" class="result-container"></div>
+    </div>
+
+    <script>
+        const packageInput = document.getElementById('packageInput');
+        const checkButton = document.getElementById('checkButton');
+        const errorDiv = document.getElementById('error');
+        const resultDiv = document.getElementById('result');
+
+        let loading = false;
+
+        function setLoading(isLoading) {
+            loading = isLoading;
+            checkButton.disabled = isLoading;
+            checkButton.textContent = isLoading ? 'Checking...' : 'Check Packages';
+        }
+
+        function showError(message) {
+            errorDiv.textContent = message;
+            errorDiv.style.display = message ? 'block' : 'none';
+        }
+
+        function showResult(data) {
+            if (data.loading) {
+                resultDiv.innerHTML = '<div class="loading">Checking packages...</div>';
+            } else if (data.error) {
+                resultDiv.innerHTML = `<div class="error">${data.error}</div>`;
+            } else if (data.data) {
+                resultDiv.innerHTML = `<pre>${JSON.stringify(data.data, null, 2)}</pre>`;
+            } else {
+                resultDiv.innerHTML = '';
+            }
+        }
+
+        async function checkPackages() {
+            setLoading(true);
+            showError('');
+
+            const packages = packageInput.value
+                .split(',')
+                .map(pkg => pkg.trim())
+                .filter(pkg => pkg);
+
+            if (packages.length === 0) {
+                showError('Please enter at least one package name');
+                setLoading(false);
+                return;
+            }
+
+            try {
+                const response = await fetch('/check', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ package_names: packages }),
+                });
+                const data = await response.json();
+                showResult({
+                    loading: false,
+                    success: data.success,
+                    data: data.data,
+                    error: data.error
+                });
+            } catch (err) {
+                showResult({
+                    loading: false,
+                    success: false,
+                    error: err.message
+                });
+            }
+            setLoading(false);
+        }
+
+        checkButton.addEventListener('click', checkPackages);
+        packageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !loading) {
+                checkPackages();
+            }
+        });
+    </script>
+</body>
+</html>

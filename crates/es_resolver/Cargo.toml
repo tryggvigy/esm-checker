@@ -1,0 +1,12 @@
+[package]
+name = "es_resolver"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.72"
+
+
+[dependencies]
+log = "0.4.17"
+serde = { version = "1.0.171", features = ["derive"] }
+serde_json = "1.0.94"
+thiserror = "1.0.44"
