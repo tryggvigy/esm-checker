@@ -1,5 +1,6 @@
 use rayon::prelude::*;
 use std::{fs::canonicalize, sync::Arc};
+use tracing::{debug, trace};
 
 use es_resolver::package_json::PackageJsonParser;
 use es_resolver::prelude::*;
@@ -18,8 +19,8 @@ pub fn generate_report(
     let abs_pkg_json_path = canonicalize(package_json_location)?;
 
     let pkg = PackageJson::load(&abs_pkg_json_path)?;
-    log::debug!("Analysing {:?}", abs_pkg_json_path);
-    log::trace!("Package.json dependencies {:?}", pkg.dependencies);
+    debug!("Analysing {:?}", abs_pkg_json_path);
+    trace!("Package.json dependencies {:?}", pkg.dependencies);
 
     let pkg_json_repo = abs_pkg_json_path.parent().unwrap_or_else(|| {
         panic!(

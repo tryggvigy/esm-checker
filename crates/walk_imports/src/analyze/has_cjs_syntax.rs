@@ -2,6 +2,8 @@ use swc_core::ecma::ast::*;
 use swc_core::ecma::atoms::js_word;
 use swc_core::ecma::visit::VisitWith;
 use swc_core::ecma::visit::{noop_visit_type, Visit};
+use tracing::trace;
+
 struct CommonJSVisitor {
     has_cjs_syntax: bool,
     cjs_syntax: Option<MemberExpr>,
@@ -67,7 +69,7 @@ pub fn has_cjs_syntax(module: &Module) -> bool {
     module.visit_with(&mut m);
 
     if let Some(expr) = m.cjs_syntax {
-        log::trace!("CommonJS syntax expression {:?}", expr);
+        trace!("CommonJS syntax expression {:?}", expr);
     }
     m.has_cjs_syntax
 }

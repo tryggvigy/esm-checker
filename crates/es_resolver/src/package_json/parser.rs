@@ -10,6 +10,8 @@ use crate::errors::ResolveError;
 
 use super::{ExportsLikeField, FilenameOrConditional, PackageJson, RawPackageJson};
 
+use tracing::warn;
+
 const SHARDS: usize = 8;
 
 /// Parses package.json files and caches the results.
@@ -166,7 +168,7 @@ impl PackageJsonParser {
         match parsed {
             Ok(object) => Ok(object),
             Err(e) => {
-                log::warn!("Failed to parse package.json: {}", e);
+                warn!("Failed to parse package.json: {}", e);
                 Err(e)
             }
         }

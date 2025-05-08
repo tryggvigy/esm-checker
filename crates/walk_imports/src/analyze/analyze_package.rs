@@ -6,6 +6,7 @@ use std::{
 use es_resolver::package_json::PackageJsonParser;
 use es_resolver::prelude::*;
 use swc_core::common::{sync::Lrc, SourceMap};
+use tracing::info;
 
 use crate::analyze::walk::walk;
 
@@ -17,7 +18,7 @@ pub fn analyze_package(
     package_json_parser: &PackageJsonParser,
     node_resolver: &impl Resolve,
 ) -> Result<Analysis, AnalysisError> {
-    log::info!("Processing {}", package_name);
+    info!("Processing {}", package_name);
 
     let mut module_path = path.join("node_modules");
     module_path.push(package_name);
