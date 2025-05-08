@@ -1,0 +1,37 @@
+{
+  "name": "is-esm-ready-yet",
+  "version": "0.1.0",
+  "description": "Check if your dependencies are ESM ready",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "artifacts"
+  ],
+  "napi": {
+    "name": "is-esm-ready-yet",
+    "triples": {}
+  },
+    "ava": {
+    "timeout": "3m"
+  },
+  "engines": {
+    "node": ">= 10"
+  },
+  "scripts": {
+    "napi": "napi",
+    "artifacts": "napi artifacts",
+    "build": "napi build --platform --release",
+    "build:debug": "napi build --platform",
+    "prepublishOnly": "napi prepublish -t npm",
+    "test": "ava",
+    "universal": "napi universal",
+    "version": "napi version"
+  },
+  "devDependencies": {
+    "@napi-rs/cli": "^2.16.17",
+    "ava": "^6.0.1"
+
+  }
+}

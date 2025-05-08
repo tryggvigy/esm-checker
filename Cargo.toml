@@ -7,4 +7,5 @@ members = [
     "crates/es_resolver",
     "crates/web_server",
     "crates/fetch_and_report",
+    "crates/napi_esm",
 ]

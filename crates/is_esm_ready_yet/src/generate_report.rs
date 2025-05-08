@@ -1,5 +1,5 @@
 use rayon::prelude::*;
-use std::{error::Error, fs::canonicalize, sync::Arc};
+use std::{fs::canonicalize, sync::Arc};
 
 use es_resolver::package_json::PackageJsonParser;
 use es_resolver::prelude::*;
@@ -14,7 +14,7 @@ use crate::pkg_json::PackageJson;
 pub fn generate_report(
     package_json_location: &str,
     check: Option<Vec<String>>,
-) -> Result<Report, Box<dyn Error>> {
+) -> Result<Report, Box<dyn std::error::Error>> {
     let abs_pkg_json_path = canonicalize(package_json_location)?;
 
     let pkg = PackageJson::load(&abs_pkg_json_path)?;
@@ -61,7 +61,7 @@ mod test {
     use walk_imports::report::types::FauxESM;
     use walk_imports::report::Report;
 
-    use crate::generate_report;
+    use super::generate_report;
 
     fn pkg_json() -> String {
         let test_repo_path = env::current_dir()
@@ -74,12 +74,13 @@ mod test {
 
     #[test]
     fn react() {
+        let report = generate_report(&pkg_json(), Some(vec![String::from("react")])).unwrap();
         assert_eq!(
-            generate_report(&pkg_json(), Some(vec![String::from("react")])).unwrap(),
+            report,
             Report {
                 total: 1,
-                cjs: vec![String::from("react")],
                 esm: vec![],
+                cjs: vec![String::from("react")],
                 faux_esm: FauxESM {
                     with_commonjs_dependencies: vec![],
                     with_missing_js_file_extensions: vec![],
@@ -87,17 +88,19 @@ mod test {
                 resolve_errors: vec![],
                 parse_errors: vec![],
             }
-        )
+        );
     }
 
     #[test]
     fn alloc_quick_lru() {
+        let report =
+            generate_report(&pkg_json(), Some(vec![String::from("@alloc/quick-lru")])).unwrap();
         assert_eq!(
-            generate_report(&pkg_json(), Some(vec![String::from("@alloc/quick-lru")])).unwrap(),
+            report,
             Report {
                 total: 1,
-                cjs: vec![String::from("@alloc/quick-lru")],
-                esm: vec![],
+                esm: vec![String::from("@alloc/quick-lru")],
+                cjs: vec![],
                 faux_esm: FauxESM {
                     with_commonjs_dependencies: vec![],
                     with_missing_js_file_extensions: vec![],
@@ -105,6 +108,6 @@ mod test {
                 resolve_errors: vec![],
                 parse_errors: vec![],
             }
-        )
+        );
     }
 }

@@ -1,3 +1,4 @@
 target/
+.DS_Store
 test_repo/node_modules/
-DS_Store
+crates/napi_esm/node_modules/
