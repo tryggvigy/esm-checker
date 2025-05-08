@@ -2,3 +2,4 @@ target/
 .DS_Store
 test_repo/node_modules/
 crates/napi_esm/node_modules/
+.yarn

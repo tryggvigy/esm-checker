@@ -50,6 +50,10 @@ pub async fn fetch_and_analyze_package(
     let output = tokio::process::Command::new("npm")
         .arg("install")
         .arg("--no-cache")
+        .arg("--ignore-scripts")
+        .arg("--no-bin-links")
+        .arg("--no-audit")
+        .arg("--no-package-lock")
         .current_dir(&temp_path)
         .output()
         .await
