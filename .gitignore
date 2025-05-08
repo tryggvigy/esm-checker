@@ -1,5 +1,22 @@
 target/
 .DS_Store
-test_repo/node_modules/
 crates/napi_esm/node_modules/
-.yarn
+
+### Node ###
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+.yarn/*
+!.yarn/cache
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+*.node

@@ -1,6 +1,5 @@
 use es_resolver::package_json::PackageJsonParser;
 use es_resolver::prelude::*;
-// cargo test -p walk_imports -- --nocapture
 use pretty_assertions::assert_eq;
 use std::{env, path::PathBuf, sync::Arc};
 

@@ -1,18 +1,19 @@
 {
-  "name": "is-esm-ready-yet-darwin-x64",
-  "version": "0.0.0",
+  "name": "@esm-checker/checker-darwin-x64",
+  "version": "0.1.0",
   "os": [
     "darwin"
   ],
   "cpu": [
     "x64"
   ],
-  "main": "is-esm-ready-yet.darwin-x64.node",
+  "main": "checker.darwin-x64.node",
   "files": [
-    "is-esm-ready-yet.darwin-x64.node"
+    "checker.darwin-x64.node"
   ],
-  "license": "MIT",
+  "description": "Check if your dependencies are ESM ready",
   "engines": {
     "node": ">= 10"
-  }
+  },
+  "repository": "https://github.com/tryggvigy/esm-checker"
 }

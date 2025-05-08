@@ -1,3 +1,3 @@
-# `test-darwin-x64`
+# `@esm-checker/checker-darwin-x64`
 
-This is the **x86_64-apple-darwin** binary for `test`
+This is the **x86_64-apple-darwin** binary for `@esm-checker/checker`

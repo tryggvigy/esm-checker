@@ -1,5 +1,5 @@
 {
-  "name": "is-esm-ready-yet",
+  "name": "@esm-checker/checker",
   "version": "0.1.0",
   "description": "Check if your dependencies are ESM ready",
   "main": "index.js",
@@ -10,10 +10,10 @@
     "artifacts"
   ],
   "napi": {
-    "name": "is-esm-ready-yet",
+    "name": "checker",
     "triples": {}
   },
-    "ava": {
+  "ava": {
     "timeout": "3m"
   },
   "engines": {
@@ -25,13 +25,27 @@
     "build": "napi build --platform --release",
     "build:debug": "napi build --platform",
     "prepublishOnly": "napi prepublish -t npm",
-    "test": "ava",
     "universal": "napi universal",
     "version": "napi version"
   },
   "devDependencies": {
     "@napi-rs/cli": "^2.16.17",
     "ava": "^6.0.1"
-
+  },
+  "packageManager": "yarn@3.5.0+sha512.2dc70be5fce9f66756d25b00a888f3ca66f86b502b76750e72ba54cec89da767b938c54124595e26f868825688e0fe3552c26c76a330673343057acadd5cfcf2",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tryggvigy/esm-checker.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tryggvigy/esm-checker/issues"
+  },
+  "homepage": "https://github.com/tryggvigy/esm-checker#readme",
+  "optionalDependencies": {
+    "@esm-checker/checker-darwin-x64": "0.1.0",
+    "@esm-checker/checker-linux-x64-gnu": "0.1.0",
+    "@esm-checker/checker-win32-x64-msvc": "0.1.0"
   }
 }
