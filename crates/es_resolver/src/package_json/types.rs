@@ -1,6 +1,7 @@
 use std::{borrow::Cow, collections::HashMap, path::PathBuf};
 
 use crate::{errors::ResolveError, prelude::Resolve};
+use tracing::trace;
 
 /// A parsed `package.json` file.
 #[derive(Debug, serde::Deserialize)]
@@ -113,7 +114,7 @@ impl PackageJson {
         } else if let Some(name) = &self.name {
             Ok(vec![resolver.resolve(name.clone(), &self.package_root)?])
         } else {
-            log::trace!(
+            trace!(
                 "Could not find an entrypoint for package {} and package.json {:?}",
                 self.name.as_ref().unwrap_or(&"unknown".to_owned()),
                 self
@@ -148,7 +149,7 @@ impl PackageJson {
             }
         }
 
-        log::trace!(
+        trace!(
             "Could not find an entrypoint for package {} in conditional {:?} with condition names {:?}",
             self.name.as_ref().unwrap_or(&"unknown".to_owned()),
             conditional,

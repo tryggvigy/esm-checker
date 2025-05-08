@@ -54,7 +54,9 @@ pub fn get_default_es_resolver_with_package_json_parser(
                 &package_json_parser,
             )))
             .chain(PackageJsonResolver::new(Arc::clone(&package_json_parser)))
-            .chain(PseudoNamespaceResolver::new(package_json_parser))
+            .chain(PseudoNamespaceResolver::new(Arc::clone(
+                &package_json_parser,
+            )))
             .chain(ExportsResolver::new(
                 FieldName::Exports,
                 condition_names.clone(),

@@ -3,6 +3,8 @@
 use crate::generate_report::generate_report;
 use clap::Parser as ClapParser;
 use std::{error::Error, path::PathBuf, time::Instant};
+use tracing::{info, Level};
+use tracing_subscriber::{EnvFilter, FmtSubscriber};
 mod generate_report;
 mod pkg_json;
 
@@ -25,7 +27,17 @@ struct Args {
 fn main() -> Result<(), Box<dyn Error>> {
     let start = Instant::now();
 
-    env_logger::builder().format_timestamp(None).init();
+    FmtSubscriber::builder()
+        .with_env_filter(EnvFilter::from_default_env())
+        .with_target(true)
+        .with_thread_ids(true)
+        .with_file(true)
+        .with_line_number(true)
+        .with_thread_names(true)
+        .with_level(true)
+        .with_ansi(true)
+        .pretty()
+        .init();
 
     let args = Args::parse();
 
@@ -45,19 +57,19 @@ fn main() -> Result<(), Box<dyn Error>> {
     }
 
     let duration = start.elapsed();
-    log::info!("Scanned {} dependencies", report.total);
-    log::info!("ESM: {}", report.esm.len());
-    log::info!("CommonJS: {}", report.cjs.len());
-    log::info!(
+    info!("Scanned {} dependencies", report.total);
+    info!("ESM: {}", report.esm.len());
+    info!("CommonJS: {}", report.cjs.len());
+    info!(
         "Faux ESM with CommonJS transitive dependencies: {}",
         report.faux_esm.with_commonjs_dependencies.len()
     );
-    log::info!(
+    info!(
         "Faux ESM with missing JS file extensions: {}",
         report.faux_esm.with_missing_js_file_extensions.len()
     );
-    log::info!("Resolve errors: {}", report.resolve_errors.len());
-    log::info!("Parse errors: {}", report.parse_errors.len());
+    info!("Resolve errors: {}", report.resolve_errors.len());
+    info!("Parse errors: {}", report.parse_errors.len());
 
     println!("Done in {:#?}", duration);
 

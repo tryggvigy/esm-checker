@@ -11,6 +11,7 @@ use swc_core::{
     ecma::loader::NODE_BUILTINS,
 };
 use swc_ecma_dep_graph::{analyze_dependencies, DependencyKind};
+use tracing::{debug, error, trace, warn};
 
 pub fn walk(
     current_module: &str,
@@ -22,15 +23,11 @@ pub fn walk(
     analysis: &mut Analysis,
     visited: &mut HashSet<PathBuf>,
 ) -> Result<(), AnalysisError> {
-    log::trace!(
-        "Inspecting entrypoint {:?} from path {:?}",
-        entrypoint,
-        import_path
-    );
+    trace!("Walking imports for {:?}", entrypoint);
 
     if visited.contains(entrypoint) {
         // TODO investigate why it happens so often? something wrong?
-        log::trace!(
+        trace!(
             "Already visited: \"{:?}\" in \"{:?}\"",
             entrypoint,
             import_path
@@ -54,7 +51,7 @@ pub fn walk(
 
     let has_cjs = has_cjs_syntax(&module);
     if has_cjs {
-        log::debug!("Found CommonJS syntax in {:?}", entrypoint);
+        debug!("Found CommonJS syntax in {:?}", entrypoint);
         // TODO what if transitive dep of react imports react as well?
         if current_module == analysis.package_name {
             analysis.is_entry_esm = false;
@@ -114,15 +111,15 @@ pub fn walk(
                 continue;
             }
             Err(ResolveError::PeerDependencyNotInstalled(peer_dependency_name)) => {
-                log::warn!(
+                warn!(
                     "Skipping not installed peer dependency: {}",
                     peer_dependency_name
                 );
                 continue;
             }
             Err(e) => {
-                log::error!(
-                    "Error resolving {:?} from {:?}: {:?}",
+                error!(
+                    "Failed to resolve {:?} from {:?}: {:?}",
                     original_specifier.to_string(),
                     entrypoint,
                     e
