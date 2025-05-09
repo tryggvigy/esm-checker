@@ -1,20 +1,21 @@
 {
-  "name": "is-esm-ready-yet-linux-x64-gnu",
-  "version": "0.0.0",
+  "name": "@esm-checker/checker-linux-x64-gnu",
+  "version": "0.1.0",
   "os": [
     "linux"
   ],
   "cpu": [
     "x64"
   ],
-  "main": "is-esm-ready-yet.linux-x64-gnu.node",
+  "main": "checker.linux-x64-gnu.node",
   "files": [
-    "is-esm-ready-yet.linux-x64-gnu.node"
+    "checker.linux-x64-gnu.node"
   ],
-  "license": "MIT",
+  "description": "Check if your dependencies are ESM ready",
   "engines": {
     "node": ">= 10"
   },
+  "repository": "https://github.com/tryggvigy/esm-checker",
   "libc": [
     "glibc"
   ]

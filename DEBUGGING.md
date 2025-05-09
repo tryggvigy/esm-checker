@@ -30,3 +30,4 @@ cargo run -p is_esm_ready_yet --release -- -p <rel/abs_path_to_package.json> -o 
 
 # Misc
 - `RUST_LOG=info,walk_imports=debug cargo run`
+- `cargo test -p walk_imports -- --nocapture`

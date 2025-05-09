@@ -1,7 +1,7 @@
 name: CI
 env:
   DEBUG: napi:*
-  APP_NAME: test
+  APP_NAME: checker
   MACOSX_DEPLOYMENT_TARGET: '10.13'
 permissions:
   contents: write
@@ -26,10 +26,13 @@ jobs:
       matrix:
         settings:
           - host: macos-latest
+            target: aarch64-apple-darwin
+            build: corepack yarn build --target aarch64-apple-darwin
+          - host: macos-latest
             target: x86_64-apple-darwin
-            build: yarn build --target x86_64-apple-darwin
+            build: corepack yarn build --target x86_64-apple-darwin
           - host: windows-latest
-            build: yarn build --target x86_64-pc-windows-msvc
+            build: corepack yarn build --target x86_64-pc-windows-msvc
             target: x86_64-pc-windows-msvc
           - host: ubuntu-latest
             target: x86_64-unknown-linux-gnu
@@ -39,12 +42,17 @@ jobs:
     runs-on: ${{ matrix.settings.host }}
     steps:
       - uses: actions/checkout@v4
+      - name: Enable Corepack
+        working-directory: ${{ github.workspace }}/crates/napi_esm
+        # corepack enable fails on windows.
+        run: npm i -g --force corepack && corepack enable
       - name: Setup node
         uses: actions/setup-node@v4
         if: ${{ !matrix.settings.docker }}
         with:
           node-version: 20
           cache: yarn
+          cache-dependency-path: ${{ github.workspace }}/crates/napi_esm
       - name: Install
         uses: dtolnay/rust-toolchain@stable
         if: ${{ !matrix.settings.docker }}
@@ -69,27 +77,18 @@ jobs:
         run: ${{ matrix.settings.setup }}
         if: ${{ matrix.settings.setup }}
         shell: bash
-      - name: Setup node x86
-        if: matrix.settings.target == 'i686-pc-windows-msvc'
-        run: yarn config set supportedArchitectures.cpu "ia32"
-        shell: bash
-      - name: Install dependencies
-        run: yarn install
-      - name: Setup node x86
-        uses: actions/setup-node@v4
-        if: matrix.settings.target == 'i686-pc-windows-msvc'
-        with:
-          node-version: 20
-          cache: yarn
-          architecture: x86
       - name: Build in docker
         uses: addnab/docker-run-action@v3
         if: ${{ matrix.settings.docker }}
         with:
           image: ${{ matrix.settings.docker }}
           options: '--user 0:0 -v ${{ github.workspace }}/.cargo-cache/git/db:/usr/local/cargo/git/db -v ${{ github.workspace }}/.cargo/registry/cache:/usr/local/cargo/registry/cache -v ${{ github.workspace }}/.cargo/registry/index:/usr/local/cargo/registry/index -v ${{ github.workspace }}:/build -w /build'
-          run: ${{ matrix.settings.build }}
+          # cd relpath because we are inside docker
+          run: |
+            cd ./crates/napi_esm
+            ${{ matrix.settings.build }}
       - name: Build
+        working-directory: ${{ github.workspace }}/crates/napi_esm
         run: ${{ matrix.settings.build }}
         if: ${{ !matrix.settings.docker }}
         shell: bash
@@ -97,7 +96,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: bindings-${{ matrix.settings.target }}
-          path: ${{ env.APP_NAME }}.*.node
+          path: ${{ github.workspace }}/crates/napi_esm/${{ env.APP_NAME }}.*.node
           if-no-files-found: error
   test-macOS-windows-binding:
     name: Test bindings on ${{ matrix.settings.target }} - node@${{ matrix.node }}
@@ -112,29 +111,37 @@ jobs:
           - host: windows-latest
             target: x86_64-pc-windows-msvc
         node:
-          - '18'
           - '20'
+          - '22'
     runs-on: ${{ matrix.settings.host }}
     steps:
       - uses: actions/checkout@v4
+      - name: Enable Corepack
+        working-directory: ${{ github.workspace }}/crates/napi_esm
+        # corepack enable fails on windows.
+        run: npm i -g --force corepack && corepack enable
       - name: Setup node
         uses: actions/setup-node@v4
         with:
+          architecture: x64
           node-version: ${{ matrix.node }}
           cache: yarn
-          architecture: x64
+          cache-dependency-path: ${{ github.workspace }}/crates/napi_esm
       - name: Install dependencies
+        working-directory: ./crates/napi_esm
         run: yarn install
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
           name: bindings-${{ matrix.settings.target }}
-          path: .
+          path: ${{ github.workspace }}/crates/napi_esm
       - name: List packages
+        working-directory: ./crates/napi_esm
         run: ls -R .
         shell: bash
       - name: Test bindings
-        run: yarn test
+        working-directory: ./crates/napi_esm
+        run: node --test
   test-linux-x64-gnu-binding:
     name: Test bindings on Linux-x64-gnu - node@${{ matrix.node }}
     needs:
@@ -143,28 +150,41 @@ jobs:
       fail-fast: false
       matrix:
         node:
-          - '18'
           - '20'
+          - '22'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Enable Corepack
+        working-directory: ${{ github.workspace }}/crates/napi_esm
+        # corepack enable fails on windows.
+        run: npm i -g --force corepack && corepack enable
       - name: Setup node
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
           cache: yarn
+          cache-dependency-path: ${{ github.workspace }}/crates/napi_esm
       - name: Install dependencies
+        working-directory: ./crates/napi_esm
         run: yarn install
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
           name: bindings-x86_64-unknown-linux-gnu
-          path: .
+          path: ${{ github.workspace }}/crates/napi_esm
       - name: List packages
+        working-directory: ./crates/napi_esm
         run: ls -R .
         shell: bash
+      - name: Debug
+        run: |
+          ls
+          echo "......"
+          ls ./crates/napi_esm
+        shell: bash
       - name: Test bindings
-        run: docker run --rm -v $(pwd):/build -w /build node:${{ matrix.node }}-slim yarn test
+        run: docker run --rm -v $(pwd):/build -w /build node:${{ matrix.node }}-slim /bin/bash -c "cd ./crates/napi_esm && node --test"
   publish:
     name: Publish
     runs-on: ubuntu-latest
@@ -173,23 +193,33 @@ jobs:
       - test-linux-x64-gnu-binding
     steps:
       - uses: actions/checkout@v4
+      - name: Enable Corepack
+        working-directory: ${{ github.workspace }}/crates/napi_esm
+        run: corepack enable
       - name: Setup node
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: yarn
+          cache-dependency-path: ${{ github.workspace }}/crates/napi_esm
       - name: Install dependencies
+        working-directory: ./crates/napi_esm
         run: yarn install
       - name: Download all artifacts
         uses: actions/download-artifact@v4
         with:
-          path: artifacts
+          path: ./crates/napi_esm/artifacts
       - name: Move artifacts
+        working-directory: ./crates/napi_esm
         run: yarn artifacts
       - name: List packages
+        working-directory: ./crates/napi_esm
         run: ls -R ./npm
         shell: bash
       - name: Publish
+        working-directory: ./crates/napi_esm
+        # if: major.minor.patch
+        # elif: major.minor.patch-next (or patch.x or anything else after patch)
         run: |
           npm config set provenance true
           if git log -1 --pretty=%B | grep "^[0-9]\+\.[0-9]\+\.[0-9]\+$";

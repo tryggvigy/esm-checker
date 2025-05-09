@@ -1,18 +1,19 @@
 {
-  "name": "is-esm-ready-yet-win32-x64-msvc",
-  "version": "0.0.0",
+  "name": "@esm-checker/checker-win32-x64-msvc",
+  "version": "0.1.0",
   "os": [
     "win32"
   ],
   "cpu": [
     "x64"
   ],
-  "main": "is-esm-ready-yet.win32-x64-msvc.node",
+  "main": "checker.win32-x64-msvc.node",
   "files": [
-    "is-esm-ready-yet.win32-x64-msvc.node"
+    "checker.win32-x64-msvc.node"
   ],
-  "license": "MIT",
+  "description": "Check if your dependencies are ESM ready",
   "engines": {
     "node": ">= 10"
-  }
+  },
+  "repository": "https://github.com/tryggvigy/esm-checker"
 }
