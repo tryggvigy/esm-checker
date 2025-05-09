@@ -28,6 +28,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         [null, {\
           "packageLocation": "./",\
           "packageDependencies": [\
+            ["@esm-checker/checker-darwin-arm64", "npm:0.1.0"],\
             ["@esm-checker/checker-darwin-x64", "npm:0.1.0"],\
             ["@esm-checker/checker-linux-x64-gnu", "npm:0.1.0"],\
             ["@esm-checker/checker-win32-x64-msvc", "npm:0.1.0"],\
@@ -42,6 +43,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./",\
           "packageDependencies": [\
             ["@esm-checker/checker", "workspace:."],\
+            ["@esm-checker/checker-darwin-arm64", "npm:0.1.0"],\
             ["@esm-checker/checker-darwin-x64", "npm:0.1.0"],\
             ["@esm-checker/checker-linux-x64-gnu", "npm:0.1.0"],\
             ["@esm-checker/checker-win32-x64-msvc", "npm:0.1.0"],\
@@ -49,6 +51,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["ava", "virtual:543130f2e51f3f273cecf15fd9ae6b5068f1eb05752f8a1ded7a911f8c1f34dac9cff7748efb934092cabf5b1c625e9f117d8e4ba9773ef423a0ca1bb0fd0995#npm:6.3.0"]\
           ],\
           "linkType": "SOFT"\
+        }]\
+      ]],\
+      ["@esm-checker/checker-darwin-arm64", [\
+        ["npm:0.1.0", {\
+          "packageLocation": "./.yarn/unplugged/@esm-checker-checker-darwin-arm64-npm-0.1.0-cc7b13662d/node_modules/@esm-checker/checker-darwin-arm64/",\
+          "packageDependencies": [\
+            ["@esm-checker/checker-darwin-arm64", "npm:0.1.0"]\
+          ],\
+          "linkType": "HARD"\
         }]\
       ]],\
       ["@esm-checker/checker-darwin-x64", [\

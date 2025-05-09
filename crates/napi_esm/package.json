@@ -11,7 +11,11 @@
   ],
   "napi": {
     "name": "checker",
-    "triples": {}
+    "triples": {
+      "additional": [
+        "aarch64-apple-darwin"
+      ]
+    }
   },
   "ava": {
     "timeout": "3m"
@@ -44,6 +48,7 @@
   },
   "homepage": "https://github.com/tryggvigy/esm-checker#readme",
   "optionalDependencies": {
+    "@esm-checker/checker-darwin-arm64": "0.1.0",
     "@esm-checker/checker-darwin-x64": "0.1.0",
     "@esm-checker/checker-linux-x64-gnu": "0.1.0",
     "@esm-checker/checker-win32-x64-msvc": "0.1.0"
