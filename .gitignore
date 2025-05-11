@@ -1,6 +1,6 @@
 target/
 .DS_Store
-crates/napi_esm/node_modules/
+crates/esm_checker_bindings/node_modules/
 
 ### Node ###
 # Logs
@@ -11,13 +11,13 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 
-crates/napi_esm/.yarn/*
-!crates/napi_esm/.yarn/cache
-!crates/napi_esm/.yarn/patches
-!crates/napi_esm/.yarn/plugins
-!crates/napi_esm/.yarn/releases
-!crates/napi_esm/.yarn/sdks
-!crates/napi_esm/.yarn/versions
+crates/esm_checker_bindings/.yarn/*
+!crates/esm_checker_bindings/.yarn/cache
+!crates/esm_checker_bindings/.yarn/patches
+!crates/esm_checker_bindings/.yarn/plugins
+!crates/esm_checker_bindings/.yarn/releases
+!crates/esm_checker_bindings/.yarn/sdks
+!crates/esm_checker_bindings/.yarn/versions
 
 *.node
 

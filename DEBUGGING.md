@@ -14,16 +14,16 @@ Run the web server:
 DEBUG_DIR="<abs_path_to_debug_dir>" RUST_LOG="trace" cargo run -p web_server
 ```
 
-## Running rusty is_esm_ready_yet on a repo and print to console
+## Running reporter on a repo and print to console
 
 ```bash
-cargo run -p is_esm_ready_yet --release -- -p <rel/abs_path_to_package.json> | grep "react"
+cargo run -p reporter --release -- -p <rel/abs_path_to_package.json> | grep "react"
 ```
 
-## Running rusty is_esm_ready_yet on a repo and generate report in a file
+## Running reporter on a repo and generate report in a file
 
 ```bash
-cargo run -p is_esm_ready_yet --release -- -p <rel/abs_path_to_package.json> -o out.json
+cargo run -p reporter --release -- -p <rel/abs_path_to_package.json> -o out.json
 ```
 
 ---
@@ -31,3 +31,4 @@ cargo run -p is_esm_ready_yet --release -- -p <rel/abs_path_to_package.json> -o 
 # Misc
 - `RUST_LOG=info,walk_imports=debug cargo run`
 - `cargo test -p walk_imports -- --nocapture`
+- `RUST_BACKTRACE=1 cargo test -p reporter --  --show-output --nocapture`

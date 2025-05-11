@@ -444,6 +444,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "esm_checker_bindings"
+version = "0.1.0"
+dependencies = [
+ "napi",
+ "napi-build",
+ "napi-derive",
+ "report_model",
+ "reporter",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
 name = "fastrand"
 version = "2.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -454,8 +467,8 @@ name = "fetch_and_report"
 version = "0.1.0"
 dependencies = [
  "anyhow",
- "is_esm_ready_yet",
  "report_model",
+ "reporter",
  "serde",
  "serde_json",
  "tempfile",
@@ -799,22 +812,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "is_esm_ready_yet"
-version = "0.1.0"
-dependencies = [
- "clap",
- "es_resolver",
- "pretty_assertions",
- "rayon",
- "report_model",
- "serde",
- "serde_json",
- "tracing",
- "tracing-subscriber",
- "walk_imports",
-]
-
-[[package]]
 name = "itoa"
 version = "1.0.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1057,19 +1054,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "427802e8ec3a734331fec1035594a210ce1ff4dc5bc1950530920ab717964ea3"
 dependencies = [
  "libloading",
-]
-
-[[package]]
-name = "napi_esm"
-version = "0.1.0"
-dependencies = [
- "is_esm_ready_yet",
- "napi",
- "napi-build",
- "napi-derive",
- "report_model",
- "serde",
- "serde_json",
 ]
 
 [[package]]
@@ -1473,6 +1457,22 @@ name = "report_model"
 version = "0.1.0"
 dependencies = [
  "serde",
+]
+
+[[package]]
+name = "reporter"
+version = "0.1.0"
+dependencies = [
+ "clap",
+ "es_resolver",
+ "pretty_assertions",
+ "rayon",
+ "report_model",
+ "serde",
+ "serde_json",
+ "tracing",
+ "tracing-subscriber",
+ "walk_imports",
 ]
 
 [[package]]

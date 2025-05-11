@@ -1,6 +1,6 @@
 use anyhow::{Context, Result};
-use is_esm_ready_yet::generate_report::generate_report;
 use report_model::Report;
+use reporter::generate_report::generate_report;
 use std::path::PathBuf;
 use tempfile::TempDir;
 use tracing::{info, warn};

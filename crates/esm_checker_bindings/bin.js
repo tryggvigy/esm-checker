@@ -5,7 +5,7 @@ const { generateReport } = require('./index.js')
 function printHelp() {
   console.log(`Checks ESM readiness of a project
 
-Usage: is_esm_ready_yet [OPTIONS] --package-json-location <PACKAGE_JSON_LOCATION>
+Usage: checker [OPTIONS] --package-json-location <PACKAGE_JSON_LOCATION>
 
 Options:
   -p, --package-json-location <PACKAGE_JSON_LOCATION>

@@ -1,5 +1,5 @@
 [package]
-name = "napi_esm"
+name = "esm_checker_bindings"
 version = "0.1.0"
 edition = "2021"
 rust-version = "1.72"
@@ -8,7 +8,7 @@ rust-version = "1.72"
 crate-type = ["cdylib"]
 
 [dependencies]
-is_esm_ready_yet = { path = "../is_esm_ready_yet" }
+reporter = { path = "../reporter" }
 report_model = { path = "../report_model" }
 napi = { version = "2.12.2", default-features = false, features = ["napi4"] }
 napi-derive = "2.12.2"

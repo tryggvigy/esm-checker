@@ -11,7 +11,7 @@
   "files": [
     "checker.win32-x64-msvc.node"
   ],
-  "description": "Check if your dependencies are ESM ready",
+  "description": "This is the x86_64-pc-windows-msvc binary for @esm-checker/checker",
   "engines": {
     "node": ">= 10"
   },

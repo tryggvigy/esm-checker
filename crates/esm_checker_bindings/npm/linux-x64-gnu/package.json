@@ -11,7 +11,7 @@
   "files": [
     "checker.linux-x64-gnu.node"
   ],
-  "description": "Check if your dependencies are ESM ready",
+  "description": "This is the x86_64-unknown-linux-gnu binary for @esm-checker/checker",
   "engines": {
     "node": ">= 10"
   },

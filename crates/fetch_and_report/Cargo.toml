@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-is_esm_ready_yet = { path = "../is_esm_ready_yet" }
+reporter = { path = "../reporter" }
 report_model = { path = "../report_model" }
 tempfile = "3.8"
 tokio = { version = "1.0", features = ["full"] }
