@@ -1,6 +1,6 @@
 {
   "name": "@esm-checker/checker",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Check if your dependencies are ESM ready",
   "bin": "./bin.js",
   "main": "index.js",
