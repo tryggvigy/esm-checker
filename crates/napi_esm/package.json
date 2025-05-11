@@ -1,6 +1,6 @@
 {
   "name": "@esm-checker/checker",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Check if your dependencies are ESM ready",
   "main": "index.js",
   "types": "index.d.ts",
@@ -25,7 +25,7 @@
     "artifacts": "napi artifacts",
     "build": "napi build --platform --release",
     "build:debug": "napi build --platform",
-    "prepublishOnly": "node_modules/.bin/napi prepublish -t npm",
+    "prepublishOnly": "napi prepublish -t npm",
     "universal": "napi universal",
     "version": "napi version"
   },
