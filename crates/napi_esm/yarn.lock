@@ -51,6 +51,8 @@ __metadata:
       optional: true
     "@esm-checker/checker-win32-x64-msvc":
       optional: true
+  bin:
+    checker: ./bin.js
   languageName: unknown
   linkType: soft
 

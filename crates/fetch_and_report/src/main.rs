@@ -5,7 +5,7 @@ async fn main() -> anyhow::Result<()> {
     let package_name = std::env::args()
         .nth(1)
         .unwrap_or_else(|| "react".to_string());
-    let result = fetch_and_analyze_package(&[package_name.clone()]).await?;
+    let result = fetch_and_analyze_package(&[package_name.clone()], None).await?;
     println!(
         "Report for {}: {}",
         package_name,

@@ -16,4 +16,5 @@ swc_ecma_dep_graph = "0.102.2"
 es_resolver = { path = "../es_resolver" }
 pretty_assertions = "1.3.0"
 thiserror = "1.0.44"
+report_model = { path = "../report_model" }
 

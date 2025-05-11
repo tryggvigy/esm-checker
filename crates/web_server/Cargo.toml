@@ -14,3 +14,4 @@ fetch_and_report = { path = "../fetch_and_report" }
 futures = "0.3"
 tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+report_model = { path = "../report_model" }

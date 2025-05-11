@@ -310,6 +310,6 @@ if (!nativeBinding) {
   throw new Error(`Failed to load native binding`)
 }
 
-const { generateReportJs } = nativeBinding
+const { generateReport } = nativeBinding
 
-module.exports.generateReportJs = generateReportJs
+module.exports.generateReport = generateReport

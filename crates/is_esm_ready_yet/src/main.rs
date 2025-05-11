@@ -3,7 +3,7 @@
 use crate::generate_report::generate_report;
 use clap::Parser as ClapParser;
 use std::{error::Error, path::PathBuf, time::Instant};
-use tracing::{info, Level};
+use tracing::info;
 use tracing_subscriber::{EnvFilter, FmtSubscriber};
 mod generate_report;
 mod pkg_json;

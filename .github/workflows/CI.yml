@@ -77,6 +77,9 @@ jobs:
         run: ${{ matrix.settings.setup }}
         if: ${{ matrix.settings.setup }}
         shell: bash
+      - name: Run cargo tests
+        run: cargo test
+        shell: bash
       - name: Build in docker
         uses: addnab/docker-run-action@v3
         if: ${{ matrix.settings.docker }}
@@ -87,7 +90,7 @@ jobs:
           run: |
             cd ./crates/napi_esm
             ${{ matrix.settings.build }}
-      - name: Build
+      - name: Build Node.js bindings
         working-directory: ${{ github.workspace }}/crates/napi_esm
         run: ${{ matrix.settings.build }}
         if: ${{ !matrix.settings.docker }}
@@ -176,12 +179,6 @@ jobs:
       - name: List packages
         working-directory: ./crates/napi_esm
         run: ls -R .
-        shell: bash
-      - name: Debug
-        run: |
-          ls
-          echo "......"
-          ls ./crates/napi_esm
         shell: bash
       - name: Test bindings
         run: docker run --rm -v $(pwd):/build -w /build node:${{ matrix.node }}-slim /bin/bash -c "cd ./crates/napi_esm && node --test"

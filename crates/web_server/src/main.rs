@@ -6,10 +6,11 @@ use axum::{
     Router,
 };
 use fetch_and_report::fetch_and_analyze_package;
+use report_model::Report;
 use serde::{Deserialize, Serialize};
 use std::path::PathBuf;
 use tower_http::cors::{Any, CorsLayer};
-use tracing::{info, Level};
+use tracing::info;
 use tracing_subscriber::{EnvFilter, FmtSubscriber};
 
 #[derive(Debug, Deserialize)]
@@ -20,7 +21,7 @@ struct CheckRequest {
 #[derive(Debug, Serialize)]
 struct CheckResponse {
     success: bool,
-    data: Option<serde_json::Value>,
+    data: Option<Report>,
     error: Option<String>,
 }
 

@@ -5,10 +5,8 @@ use tracing::{debug, trace};
 use es_resolver::package_json::PackageJsonParser;
 use es_resolver::prelude::*;
 
-use walk_imports::{
-    analyze::analyze_package,
-    report::{into_report, Report},
-};
+use report_model::Report;
+use walk_imports::{analyze::analyze_package, report::into_report};
 
 use crate::pkg_json::PackageJson;
 
@@ -58,9 +56,8 @@ pub fn generate_report(
 #[cfg(test)]
 mod test {
     use pretty_assertions::assert_eq;
+    use report_model::{FauxESM, Report};
     use std::env;
-    use walk_imports::report::types::FauxESM;
-    use walk_imports::report::Report;
 
     use super::generate_report;
 
@@ -93,14 +90,13 @@ mod test {
     }
 
     #[test]
-    fn alloc_quick_lru() {
-        let report =
-            generate_report(&pkg_json(), Some(vec![String::from("@alloc/quick-lru")])).unwrap();
+    fn screenfull_dep() {
+        let report = generate_report(&pkg_json(), Some(vec![String::from("screenfull")])).unwrap();
         assert_eq!(
             report,
             Report {
                 total: 1,
-                esm: vec![String::from("@alloc/quick-lru")],
+                esm: vec![String::from("screenfull")],
                 cjs: vec![],
                 faux_esm: FauxESM {
                     with_commonjs_dependencies: vec![],

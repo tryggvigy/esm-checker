@@ -1,16 +1,10 @@
 use es_resolver::package_json::PackageJsonParser;
 use es_resolver::prelude::*;
 use pretty_assertions::assert_eq;
+use report_model::{FauxESM, Report, WithCommonJSDependencies};
 use std::{env, path::PathBuf, sync::Arc};
 
-use crate::{
-    analyze::analyze_package,
-    report::{
-        into_report,
-        types::{FauxESM, WithCommonJSDependencies},
-        Report,
-    },
-};
+use crate::{analyze::analyze_package, report::into_report};
 
 fn test_repo_path() -> PathBuf {
     env::current_dir().unwrap().join("../../").join("test_repo")
