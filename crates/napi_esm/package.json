@@ -1,6 +1,6 @@
 {
   "name": "@esm-checker/checker",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Check if your dependencies are ESM ready",
   "main": "index.js",
   "types": "index.d.ts",
@@ -17,9 +17,6 @@
       ]
     }
   },
-  "ava": {
-    "timeout": "3m"
-  },
   "engines": {
     "node": ">= 10"
   },
@@ -33,8 +30,7 @@
     "version": "napi version"
   },
   "devDependencies": {
-    "@napi-rs/cli": "^2.16.17",
-    "ava": "^6.0.1"
+    "@napi-rs/cli": "^2.16.17"
   },
   "packageManager": "yarn@3.5.0+sha512.2dc70be5fce9f66756d25b00a888f3ca66f86b502b76750e72ba54cec89da767b938c54124595e26f868825688e0fe3552c26c76a330673343057acadd5cfcf2",
   "repository": {
