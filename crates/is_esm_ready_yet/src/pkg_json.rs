@@ -4,7 +4,6 @@ use std::{error::Error, fs::File, path::PathBuf};
 
 #[derive(Deserialize, Debug)]
 pub struct PackageJson {
-    pub name: String,
     pub dependencies: Map<String, Value>,
 }
 

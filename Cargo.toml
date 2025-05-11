@@ -8,4 +8,9 @@ members = [
     "crates/web_server",
     "crates/fetch_and_report",
     "crates/napi_esm",
+    "crates/report_model"
 ]
+
+[profile.release]
+lto = true
+strip = "symbols"

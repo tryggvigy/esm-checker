@@ -1,8 +1,6 @@
 use crate::analyze::{types::AnalysisError, Analysis};
-
-use super::{
-    types::{ParseError, ResolveError, WithCommonJSDependencies, WithMissingJsFileExtensions},
-    Report,
+use report_model::{
+    ParseError, Report, ResolveError, WithCommonJSDependencies, WithMissingJsFileExtensions,
 };
 
 pub fn into_report(analyses: Vec<Result<Analysis, AnalysisError>>) -> Report {

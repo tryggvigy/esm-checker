@@ -1,23 +1,19 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict';
 
-import { generateReportJs } from '../index.js'
+import { generateReport } from '../index.js'
 
-test('generateReportJs from native', () => {
-  const reportStr = generateReportJs('../../test_repo/package.json');
-  const report = JSON.parse(reportStr);
+test('generateReport from native', () => {
+  const report = generateReport('../../test_repo/package.json');
 
   assert(report.cjs.includes('react'));
-
-  assert.equal(report.total, 4)
+  assert.equal(report.total, 4);
 });
 
-test('generateReportJs from native with specific packages', () => {
-  const reportStr = generateReportJs('../../test_repo/package.json', ['react']);
-  const report = JSON.parse(reportStr);
+test('generateReport from native with specific packages', () => {
+  const report = generateReport('../../test_repo/package.json', ['react']);
 
   assert(report.cjs.includes('react'));
-
-  assert.equal(report.total, 1)
+  assert.equal(report.total, 1);
 });
 

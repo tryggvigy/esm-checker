@@ -455,6 +455,7 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "is_esm_ready_yet",
+ "report_model",
  "serde",
  "serde_json",
  "tempfile",
@@ -805,6 +806,7 @@ dependencies = [
  "es_resolver",
  "pretty_assertions",
  "rayon",
+ "report_model",
  "serde",
  "serde_json",
  "tracing",
@@ -1065,6 +1067,7 @@ dependencies = [
  "napi",
  "napi-build",
  "napi-derive",
+ "report_model",
  "serde",
  "serde_json",
 ]
@@ -1464,6 +1467,13 @@ name = "regex-syntax"
 version = "0.6.28"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "456c603be3e8d448b072f410900c09faf164fbce2d480456f50eea6e25f9c848"
+
+[[package]]
+name = "report_model"
+version = "0.1.0"
+dependencies = [
+ "serde",
+]
 
 [[package]]
 name = "rustc-demangle"
@@ -2320,6 +2330,7 @@ dependencies = [
  "anyhow",
  "es_resolver",
  "pretty_assertions",
+ "report_model",
  "serde",
  "serde_json",
  "swc_core",
@@ -2350,6 +2361,7 @@ dependencies = [
  "axum",
  "fetch_and_report",
  "futures",
+ "report_model",
  "serde",
  "serde_json",
  "tokio",
