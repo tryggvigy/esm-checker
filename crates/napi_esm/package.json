@@ -1,6 +1,6 @@
 {
   "name": "@esm-checker/checker",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Check if your dependencies are ESM ready",
   "main": "index.js",
   "types": "index.d.ts",
