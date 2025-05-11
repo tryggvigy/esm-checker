@@ -43,7 +43,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Enable Corepack
-        working-directory: ${{ github.workspace }}/crates/napi_esm
+        working-directory: ${{ github.workspace }}/crates/esm_checker_bindings
         # corepack enable fails on windows.
         run: npm i -g --force corepack && corepack enable
       - name: Setup node
@@ -52,7 +52,7 @@ jobs:
         with:
           node-version: 20
           cache: yarn
-          cache-dependency-path: ${{ github.workspace }}/crates/napi_esm
+          cache-dependency-path: ${{ github.workspace }}/crates/esm_checker_bindings
       - name: Install
         uses: dtolnay/rust-toolchain@stable
         if: ${{ !matrix.settings.docker }}
@@ -88,10 +88,10 @@ jobs:
           options: '--user 0:0 -v ${{ github.workspace }}/.cargo-cache/git/db:/usr/local/cargo/git/db -v ${{ github.workspace }}/.cargo/registry/cache:/usr/local/cargo/registry/cache -v ${{ github.workspace }}/.cargo/registry/index:/usr/local/cargo/registry/index -v ${{ github.workspace }}:/build -w /build'
           # cd relpath because we are inside docker
           run: |
-            cd ./crates/napi_esm
+            cd ./crates/esm_checker_bindings
             ${{ matrix.settings.build }}
       - name: Build Node.js bindings
-        working-directory: ${{ github.workspace }}/crates/napi_esm
+        working-directory: ${{ github.workspace }}/crates/esm_checker_bindings
         run: ${{ matrix.settings.build }}
         if: ${{ !matrix.settings.docker }}
         shell: bash
@@ -99,7 +99,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: bindings-${{ matrix.settings.target }}
-          path: ${{ github.workspace }}/crates/napi_esm/${{ env.APP_NAME }}.*.node
+          path: ${{ github.workspace }}/crates/esm_checker_bindings/${{ env.APP_NAME }}.*.node
           if-no-files-found: error
   test-macOS-windows-binding:
     name: Test bindings on ${{ matrix.settings.target }} - node@${{ matrix.node }}
@@ -120,7 +120,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Enable Corepack
-        working-directory: ${{ github.workspace }}/crates/napi_esm
+        working-directory: ${{ github.workspace }}/crates/esm_checker_bindings
         # corepack enable fails on windows.
         run: npm i -g --force corepack && corepack enable
       - name: Setup node
@@ -129,21 +129,21 @@ jobs:
           architecture: x64
           node-version: ${{ matrix.node }}
           cache: yarn
-          cache-dependency-path: ${{ github.workspace }}/crates/napi_esm
+          cache-dependency-path: ${{ github.workspace }}/crates/esm_checker_bindings
       - name: Install dependencies
-        working-directory: ./crates/napi_esm
+        working-directory: ./crates/esm_checker_bindings
         run: yarn install
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
           name: bindings-${{ matrix.settings.target }}
-          path: ${{ github.workspace }}/crates/napi_esm
+          path: ${{ github.workspace }}/crates/esm_checker_bindings
       - name: List packages
-        working-directory: ./crates/napi_esm
+        working-directory: ./crates/esm_checker_bindings
         run: ls -R .
         shell: bash
       - name: Test bindings
-        working-directory: ./crates/napi_esm
+        working-directory: ./crates/esm_checker_bindings
         run: node --test
   test-linux-x64-gnu-binding:
     name: Test bindings on Linux-x64-gnu - node@${{ matrix.node }}
@@ -159,7 +159,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Enable Corepack
-        working-directory: ${{ github.workspace }}/crates/napi_esm
+        working-directory: ${{ github.workspace }}/crates/esm_checker_bindings
         # corepack enable fails on windows.
         run: npm i -g --force corepack && corepack enable
       - name: Setup node
@@ -167,21 +167,21 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
           cache: yarn
-          cache-dependency-path: ${{ github.workspace }}/crates/napi_esm
+          cache-dependency-path: ${{ github.workspace }}/crates/esm_checker_bindings
       - name: Install dependencies
-        working-directory: ./crates/napi_esm
+        working-directory: ./crates/esm_checker_bindings
         run: yarn install
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
           name: bindings-x86_64-unknown-linux-gnu
-          path: ${{ github.workspace }}/crates/napi_esm
+          path: ${{ github.workspace }}/crates/esm_checker_bindings
       - name: List packages
-        working-directory: ./crates/napi_esm
+        working-directory: ./crates/esm_checker_bindings
         run: ls -R .
         shell: bash
       - name: Test bindings
-        run: docker run --rm -v $(pwd):/build -w /build node:${{ matrix.node }}-slim /bin/bash -c "cd ./crates/napi_esm && node --test"
+        run: docker run --rm -v $(pwd):/build -w /build node:${{ matrix.node }}-slim /bin/bash -c "cd ./crates/esm_checker_bindings && node --test"
   publish:
     name: Publish
     runs-on: ubuntu-latest
@@ -191,34 +191,34 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Enable Corepack
-        working-directory: ${{ github.workspace }}/crates/napi_esm
+        working-directory: ${{ github.workspace }}/crates/esm_checker_bindings
         run: corepack enable
       - name: Setup node
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: yarn
-          cache-dependency-path: ${{ github.workspace }}/crates/napi_esm
+          cache-dependency-path: ${{ github.workspace }}/crates/esm_checker_bindings
       - name: Install dependencies
-        working-directory: ./crates/napi_esm
+        working-directory: ./crates/esm_checker_bindings
         run: yarn install
       - name: Download all artifacts
         uses: actions/download-artifact@v4
         with:
-          path: ./crates/napi_esm/artifacts
+          path: ./crates/esm_checker_bindings/artifacts
       - name: Move artifacts
-        working-directory: ./crates/napi_esm
+        working-directory: ./crates/esm_checker_bindings
         run: yarn artifacts
       - name: List packages
-        working-directory: ./crates/napi_esm
+        working-directory: ./crates/esm_checker_bindings
         run: ls -R ./npm
         shell: bash
       - name: Install napi globally
-        working-directory: ./crates/napi_esm
+        working-directory: ./crates/esm_checker_bindings
         run: npm i -g --force @napi-rs/cli
         shell: bash
       - name: Publish
-        working-directory: ./crates/napi_esm
+        working-directory: ./crates/esm_checker_bindings
         # if: major.minor.patch
         # elif: major.minor.patch-next (or patch.x or anything else after patch)
         run: |

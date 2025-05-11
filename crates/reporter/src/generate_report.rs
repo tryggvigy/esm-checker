@@ -52,7 +52,6 @@ pub fn generate_report(
     Ok(into_report(analyses))
 }
 
-// RUST_BACKTRACE=1 cargo test -p is_esm_ready_yet --  --show-output --nocapture
 #[cfg(test)]
 mod test {
     use pretty_assertions::assert_eq;

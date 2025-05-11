@@ -39,7 +39,7 @@
     "url": "git+https://github.com/tryggvigy/esm-checker.git"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/tryggvigy/esm-checker/issues"
   },

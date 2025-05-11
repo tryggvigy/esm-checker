@@ -1,6 +1,7 @@
 {
   "name": "@esm-checker/checker-darwin-arm64",
   "version": "0.1.0",
+  "description": "This is the aarch64-apple-darwin binary for @esm-checker/checker",
   "os": [
     "darwin"
   ],

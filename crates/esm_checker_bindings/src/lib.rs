@@ -1,6 +1,6 @@
-use is_esm_ready_yet::generate_report::generate_report as generate_report_rust;
 use napi_derive::napi;
 use report_model::Report as RustReport;
+use reporter::generate_report::generate_report as generate_report_rust;
 
 #[napi(object)]
 pub struct WithCommonJSDependencies {
