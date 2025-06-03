@@ -9,7 +9,7 @@ use fetch_and_report::fetch_and_analyze_package;
 use report_model::Report;
 use serde::{Deserialize, Serialize};
 use std::path::PathBuf;
-use tower_http::cors::{Any, CorsLayer};
+use tower_http::cors::{AllowOrigin, Any, CorsLayer};
 use tracing::info;
 use tracing_subscriber::{EnvFilter, FmtSubscriber};
 
@@ -48,7 +48,12 @@ async fn main() {
         .route("/check", post(check_packages))
         .layer(
             CorsLayer::new()
-                .allow_origin(Any)
+                .allow_origin(AllowOrigin::exact(
+                    "https://esm-checker.fly.dev".parse().unwrap(),
+                ))
+                .allow_origin(AllowOrigin::exact(
+                    "https://esmchecker.com".parse().unwrap(),
+                ))
                 .allow_methods(Any)
                 .allow_headers(Any),
         );
